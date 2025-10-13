@@ -3,7 +3,7 @@ import type { Vector } from "@/components/editor/elements/Vector";
 import { svgToImage } from "@/utils/images";
 import { useState } from "react";
 
-export default async function Editor() {
+const Editor = () => {
   const [elements, setElements] = useState<Vector[]>([]);
 
   const handleAddBox = async () => {
@@ -50,4 +50,6 @@ export default async function Editor() {
       </div>
     </div>
   );
-}
+};
+
+export default Editor;
