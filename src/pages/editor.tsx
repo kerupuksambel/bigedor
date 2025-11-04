@@ -63,7 +63,6 @@ const Editor = () => {
     try {
       const circle = createCircle(5, 5, 70, 70);
       const circleImage = await svgToImage(circle);
-      console.log(circle);
       const circleID = uuidv4();
 
       setElements([
