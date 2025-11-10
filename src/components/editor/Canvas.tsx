@@ -1,17 +1,23 @@
 import { useEffect, useRef, useState } from "react";
+import { ActionType, type Action } from "./elements/Action";
 import type { Vector } from "./elements/Vector";
 
 interface CanvasProps {
   elements: Vector[];
+  actions: Action[];
   setElements: (x: any) => void;
+  setActions: (x: Action[]) => void;
 }
 
-const Canvas = ({ elements, setElements }: CanvasProps) => {
+const Canvas = ({
+  elements,
+  actions,
+  setElements,
+  setActions,
+}: CanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [draggedElement, setDraggedElement] = useState<Vector | null>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-
-  console.log(elements);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -19,6 +25,8 @@ const Canvas = ({ elements, setElements }: CanvasProps) => {
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+
+    console.log(elements);
 
     const draw = () => {
       //   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -73,6 +81,19 @@ const Canvas = ({ elements, setElements }: CanvasProps) => {
         ...draggedElement,
         x: mouseX - offset.x,
         y: mouseY - offset.y,
+      },
+    ]);
+    setActions([
+      ...actions,
+      {
+        type: ActionType.MOVE_ELEMENT,
+        payload: {
+          elementID: draggedElement.id,
+          srcX: mouseX - offset.x,
+          srcY: mouseY - offset.y,
+          dstX: mouseX,
+          dstY: mouseY,
+        },
       },
     ]);
   };
