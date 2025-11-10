@@ -1,8 +1,14 @@
-export function svgToImage(svg: string): Promise<HTMLImageElement> {
-  return new Promise((resolve) => {
-    const img = new Image();
-    const blob = new Blob([svg], { type: "image/svg+xml" });
-    img.src = URL.createObjectURL(blob);
-    img.onload = () => resolve(img);
-  });
+export function svgToImage(svg: SVGSVGElement): HTMLImageElement {
+  const serializer = new XMLSerializer();
+  const svgString = serializer.serializeToString(svg);
+
+  // Encode SVG as base64
+  const svgBase64 = btoa(unescape(encodeURIComponent(svgString)));
+  const dataUrl = `data:image/svg+xml;base64,${svgBase64}`;
+
+  // Create an image element
+  const img = new Image();
+  img.src = dataUrl;
+
+  return img;
 }
